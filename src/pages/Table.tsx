@@ -38,13 +38,17 @@ const Table = () => {
     fetchData();
   }, [page, limit]);
 
+  console.log(page + " and " + limit);
+
   return (
     <DataTable
       value={data}
+      lazy
       paginator
       rows={limit}
       first={page * limit}
       totalRecords={totalRecords}
+      rowsPerPageOptions={[10, 25, 50, 100]}
       onPage={(e) => {
         setPage(e.first / e.rows);
         setLimit(e.rows);
@@ -62,6 +66,7 @@ const Table = () => {
         <Column key={col.field} field={col.field} header={col.header} />
       ))}
     </DataTable>
+
   );
 };
 
