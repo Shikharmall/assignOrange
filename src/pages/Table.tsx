@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getDataAPI } from "../api/getDataAPI";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Button } from "primereact/button";
 import type { ArtApiResponse, Artwork, TableColumn } from "../utils/types";
 
 const columns: TableColumn[] = [
@@ -28,6 +29,9 @@ const Table = () => {
         const res: ArtApiResponse = await getDataAPI(page + 1, limit);
         setData(res.data);
         setTotalRecords(res.pagination.total);
+        const storedIds: number[] = JSON.parse(localStorage.getItem("selectedIds") || "[]");
+        const restoredSelections = res.data.filter((item) => storedIds.includes(Number(item.id)));
+        setSelectedRows(restoredSelections);
       } catch (error) {
         console.error(error);
       } finally {
@@ -38,32 +42,54 @@ const Table = () => {
     fetchData();
   }, [page, limit]);
 
+  console.log(selectedRows);
+
   return (
-    <DataTable
-      value={data}
-      lazy
-      paginator
-      rows={limit}
-      first={page * limit}
-      totalRecords={totalRecords}
-      rowsPerPageOptions={[10, 25, 50, 100]}
-      onPage={(e) => {
-        setPage(e.first / e.rows);
-        setLimit(e.rows);
-      }}
-      selection={selectedRows}
-      onSelectionChange={(e) => setSelectedRows(e.value)}
-      selectionMode="multiple"
-      dataKey="id"
-      tableStyle={{ minWidth: "50rem" }}
-      loading={loader}
-    >
-      <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} />
-      <Column field="id" header="ID" body={(rowData) => rowData.id || "—"} />
-      {columns.map((col) => (
-        <Column key={col.field} field={col.field} header={col.header} />
-      ))}
-    </DataTable>
+    <>
+
+      {/* <div className="flex justify-between items-center mb-3">
+        <span className="text-sm font-medium">
+          {Object.keys(selectedRows).length} row(s) selected
+        </span>
+        <Button
+          label="Clear All"
+          icon="pi pi-times"
+          //onClick={clearAllSelections}
+          className="p-button-sm p-button-secondary"
+        />
+      </div> */}
+
+      <DataTable
+        value={data}
+        lazy
+        paginator
+        rows={limit}
+        first={page * limit}
+        totalRecords={totalRecords}
+        rowsPerPageOptions={[10, 25, 50, 100]}
+        onPage={(e) => {
+          setPage(e.first / e.rows);
+          setLimit(e.rows);
+        }}
+        selection={selectedRows}
+        onSelectionChange={(e) => {
+          setSelectedRows(e.value);
+          const selectedIds = e.value.map((row) => row.id);
+          localStorage.setItem("selectedIds", JSON.stringify(selectedIds));
+        }}
+        selectionMode="multiple"
+        dataKey="id"
+        tableStyle={{ minWidth: "50rem" }}
+        loading={loader}
+      >
+        <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} />
+        <Column field="id" header="ID" body={(rowData) => rowData.id || "—"} />
+        {columns.map((col) => (
+          <Column key={col.field} field={col.field} header={col.header} />
+        ))}
+      </DataTable>
+
+    </>
 
   );
 };
