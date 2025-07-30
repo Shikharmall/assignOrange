@@ -25,8 +25,3 @@ export interface TableColumn {
     field: string;
     header: string;
 }
-
-export interface City {
-    name: string,
-    code: string
-}
