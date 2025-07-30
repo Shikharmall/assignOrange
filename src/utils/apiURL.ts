@@ -15,4 +15,6 @@ if (ENV === "LOCAL") {
   URL = "";
 }
 
+console.log(URL);
+
 export const API_URL_BASE: string = URL;
