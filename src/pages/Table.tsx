@@ -38,8 +38,6 @@ const Table = () => {
     fetchData();
   }, [page, limit]);
 
-  console.log(page + " and " + limit);
-
   return (
     <DataTable
       value={data}
