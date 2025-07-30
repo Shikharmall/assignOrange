@@ -1,21 +1,16 @@
 import axios from "axios";
 import { API_URL_BASE } from "../utils/apiURL";
+import type { ArtApiResponse } from "../utils/types";
 
-// API for getting datas
-
-export const getDataAPI = async (page: number, limit: number) => {
-
-  console.log(API_URL_BASE);
-
+export const getDataAPI = async (page: number, limit: number): Promise<ArtApiResponse> => {
   try {
-    let result = await axios(
-      `${API_URL_BASE}/artworks?page=${page}&limit=${limit}`,
-      {
-        method: "GET",
-      }
+    const result = await axios.get<ArtApiResponse>(
+      `${API_URL_BASE}/artworks?page=${page}&limit=${limit}`
     );
-    return result;
+    return result.data;
   } catch (error) {
-    return error;
+    console.error("API error:", error);
+    throw new Error("Failed to fetch data");
   }
 };
+

@@ -1,6 +1,5 @@
 const ENV = import.meta.env.VITE_ENV as "LOCAL" | "DEV" | string;
 
-console.log(ENV);
 let URL: string;
 
 if (ENV === "LOCAL") {
@@ -15,6 +14,5 @@ if (ENV === "LOCAL") {
   );
   URL = "";
 }
-
 
 export const API_URL_BASE: string = URL;
