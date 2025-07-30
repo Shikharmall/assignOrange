@@ -11,18 +11,17 @@ interface Artwork {
   date_end: string;
 }
 
-
-interface ArtApiResponse {
-  data: Artwork[];
-  pagination: {
-    total: number;
-    limit: number;
-    offset: number;
-    total_pages: number;
-    current_page: number;
-    next_url: string | null;
-  };
-}
+// interface ArtApiResponse {
+//   data: Artwork[];
+//   pagination: {
+//     total: number;
+//     limit: number;
+//     offset: number;
+//     total_pages: number;
+//     current_page: number;
+//     next_url: string | null;
+//   };
+// }
 
 const Table = () => {
 
