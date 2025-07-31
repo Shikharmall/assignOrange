@@ -97,71 +97,67 @@ const Table = () => {
         </OverlayPanel>
       </div>
 
-      <DataTable
-        value={data}
-        lazy
-        paginator
-        rows={limit}
-        first={page * limit}
-        totalRecords={totalRecords}
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        onPage={(e) => {
-          setPage(e.first / e.rows);
-          setLimit(e.rows);
-        }}
-        selection={selectedRows}
-        onSelectionChange={(e) => {
-          const currentSelections: Artwork[] = e.value;
-          const currentIds = currentSelections.map((row) => row.id);
+      <div style={{ position: 'relative' }}>
 
-          const newSelectedIds = Array.from(
-            new Set([
-              ...selectedRowIds.filter((id) => currentIds.includes(id)),
-              ...currentIds,
-            ])
-          );
-          setSelectedRowIds(newSelectedIds);
-          localStorage.setItem("selectedIds", JSON.stringify(newSelectedIds));
+        <DataTable
+          value={data}
+          lazy
+          paginator
+          rows={limit}
+          first={page * limit}
+          totalRecords={totalRecords}
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          onPage={(e) => {
+            setPage(e.first / e.rows);
+            setLimit(e.rows);
+          }}
+          selection={selectedRows}
+          onSelectionChange={(e) => {
+            const currentSelections: Artwork[] = e.value;
+            const currentIds = currentSelections.map((row) => row.id);
 
-          setSelectedRows((prev) => {
-            const currentSelectedFromData = data.filter((d) => currentIds.includes(d.id));
-            const rest = prev.filter((p) => !data.some((d) => d.id === p.id));
-            return [...rest, ...currentSelectedFromData];
-          });
-        }}
-        selectionMode="multiple"
-        dataKey="id"
-        tableStyle={{ minWidth: "50rem" }}
-        loading={loader}
-      >
-        <Column
+            const newSelectedIds = Array.from(
+              new Set([
+                ...selectedRowIds.filter((id) => currentIds.includes(id)),
+                ...currentIds,
+              ])
+            );
+            setSelectedRowIds(newSelectedIds);
+            localStorage.setItem("selectedIds", JSON.stringify(newSelectedIds));
+
+            setSelectedRows((prev) => {
+              const currentSelectedFromData = data.filter((d) => currentIds.includes(d.id));
+              const rest = prev.filter((p) => !data.some((d) => d.id === p.id));
+              return [...rest, ...currentSelectedFromData];
+            });
+          }}
           selectionMode="multiple"
-          headerStyle={{ width: "4rem" }}
-          header={
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <span style={{ flex: 1 }} />
-              <Button
-                icon="pi pi-chevron-down"
-                className="p-button-sm p-button-text"
-                onClick={(e) => op.current?.toggle(e)}
-                type="button"
-              />
-            </div>
-          }
-        />
+          dataKey="id"
+          tableStyle={{ minWidth: "50rem" }}
+          loading={loader}
+        >
+          <Column
+            selectionMode="multiple"
+            headerStyle={{ width: "4rem" }}
+            bodyStyle={{ textAlign: "center" }}
+          />
 
-        {/* <Column field="id" header="ID" body={(rowData) => rowData.id || "—"} /> */}
-        {columns.map((col) => (
-          <Column key={col.field} field={col.field} header={col.header} />
-        ))}
-      </DataTable>
+          {/* <Column field="id" header="ID" body={(rowData) => rowData.id || "—"} /> */}
+          {columns.map((col) => (
+            <Column key={col.field} field={col?.field} header={col.header} />
+          ))}
+        </DataTable>
+
+        <Button
+          icon="pi pi-chevron-down"
+          className="p-button-sm p-button-text"
+          style={{ position: 'absolute', top: 18, left: 30 }}
+          //style={{ padding: 0 }}
+          onClick={(e) => op.current?.toggle(e)}
+          type="button"
+        />
+      </div>
+
     </>
   );
 };
