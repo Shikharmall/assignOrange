@@ -138,8 +138,8 @@ const Table = () => {
         >
           <Column
             selectionMode="multiple"
-            headerStyle={{ width: "4rem" }}
-            bodyStyle={{ textAlign: "center" }}
+            headerStyle={{ width: "5rem" }}
+          // bodyStyle={{ textAlign: "center" }}
           />
 
           {/* <Column field="id" header="ID" body={(rowData) => rowData.id || "—"} /> */}
@@ -150,8 +150,8 @@ const Table = () => {
 
         <Button
           icon="pi pi-chevron-down"
-          className="p-button-sm p-button-text"
-          style={{ position: 'absolute', top: 18, left: 30 }}
+          className="p-button-sm p-button-text m-10"
+          style={{ position: 'absolute', top: 18, left: 30, marginLeft: 10 }}
           onClick={(e) => op.current?.toggle(e)}
           type="button"
         />
