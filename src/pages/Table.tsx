@@ -152,7 +152,6 @@ const Table = () => {
           icon="pi pi-chevron-down"
           className="p-button-sm p-button-text"
           style={{ position: 'absolute', top: 18, left: 30 }}
-          //style={{ padding: 0 }}
           onClick={(e) => op.current?.toggle(e)}
           type="button"
         />
